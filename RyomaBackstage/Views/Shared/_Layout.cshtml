@@ -1,0 +1,76 @@
+﻿<!doctype html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <link rel="icon" type="image/png" href="wwwroot/images/DB_16х16.png">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="description" content="A front-end template that helps you build fast, modern mobile web apps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ryoma Backstage</title>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Material Design Lite">
+    <meta name="msapplication-TileImage" content="wwwroot/images/touch/ms-touch-icon-144x144-precomposed.png">
+    <meta name="msapplication-TileColor" content="#3372DF">
+    <link href='https://fonts.googleapis.com/css?family=Roboto:400,500,300,100,700,900' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="~/wwwroot/css/lib/getmdl-select.min.css">
+    <link rel="stylesheet" href="~/wwwroot/css/lib/nv.d3.min.css">
+    <link rel="stylesheet" href="~/wwwroot/css/application.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header is-small-screen">
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <div class="mdl-layout-spacer"></div>
+                <button id="more"
+                        class="mdl-button mdl-js-button mdl-button--icon">
+                    <i class="material-icons">more_vert</i>
+                </button>
+                <ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect mdl-shadow--2dp settings-dropdown"
+                    for="more">
+                    <li class="mdl-menu__item">
+                        登出
+                    </li>
+                </ul>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer">
+            <header>Ryoma</header>
+            <div class="scroll__wrapper" id="scroll__wrapper">
+                <div class="scroller" id="scroller">
+                    <div class="scroll__container" id="scroll__container">
+                        <nav class="mdl-navigation">
+                            <a class="mdl-navigation__link mdl-navigation__link--current" href="@Url.Action("Index", "Tube")">
+                                <i class="material-icons" role="presentation">dashboard</i>
+                                管料裁剪
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+                <div class='scroller__bar' id="scroller__bar"></div>
+            </div>
+        </div>
+        <main class="mdl-layout__content">
+            @RenderBody()
+        </main>
+    </div>
+    <script src="~/wwwroot/js/d3.min.js"></script>
+    <script src="~/wwwroot/js/getmdl-select.min.js"></script>
+    <script src="~/wwwroot/js/material.min.js"></script>
+    <script src="~/wwwroot/js/nv.d3.min.js"></script>
+    <script src="~/wwwroot/js/layout/layout.min.js"></script>
+    <script src="~/wwwroot/js/scroll/scroll.min.js"></script>
+    <script src="~/wwwroot/js/widgets/charts/discreteBarChart.min.js"></script>
+    <script src="~/wwwroot/js/widgets/charts/linePlusBarChart.min.js"></script>
+    <script src="~/wwwroot/js/widgets/charts/stackedBarChart.min.js"></script>
+    <script src="~/wwwroot/js/widgets/employer-form/employer-form.min.js"></script>
+    <script src="~/wwwroot/js/widgets/line-chart/line-charts-nvd3.min.js"></script>
+    <script src="~/wwwroot/js/widgets/map/maps.min.js"></script>
+    <script src="~/wwwroot/js/widgets/pie-chart/pie-charts-nvd3.min.js"></script>
+    <script src="~/wwwroot/js/widgets/table/table.min.js"></script>
+    <script src="~/wwwroot/js/widgets/todo/todo.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,154 @@
+﻿<div class="mdl-grid ui-tables">
+    <h4 style="margin-left:1%">管料裁剪</h4>
+    <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
+        <div class="mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title">
+                <h5 class="mdl-card__title-text text-color--white">設定</h5>
+            </div>
+            <div class="mdl-card__supporting-text" id="SettingForm">
+                <div class="mdl-grid tube-setting">
+                    <div class="mdl-cell mdl-cell--1-col">
+                        <div class="mdl-textfield">
+                            <span>#1</span>
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2-col">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input tube-length" type="text" placeholder="長度(公尺)">
+                        </div>
+                    </div>
+                    <div class="mdl-cell mdl-cell--2">
+                        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                            <input class="mdl-textfield__input tube-quantity" type="text" placeholder="數量">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mdl-card__actions mdl-card--border">
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--facebook" id="Crop">
+                    裁剪
+                </button>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-green" id="Add">
+                    新增
+                </button>
+                <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect button--colored-red" id="Delete">
+                    刪除
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="mdl-cell mdl-cell--12-col-desktop mdl-cell--12-col-tablet mdl-cell--4-col-phone">
+        <div class="mdl-card mdl-shadow--2dp">
+            <div class="mdl-card__title">
+                <h5 class="mdl-card__title-text text-color--white" id="Quantity"></h5>
+            </div>
+            <div class="mdl-card__supporting-text">
+                <table class="mdl-data-table mdl-js-data-table bordered-table">
+                    <thead>
+                        <tr>
+                            <th class="mdl-data-table__cell--non-numeric">#</th>
+                            <th class="mdl-data-table__cell--non-numeric">管料清單</th>
+                            <th class="mdl-data-table__cell--non-numeric">剩餘長度</th>
+                        </tr>
+                    </thead>
+                    <tbody id="Result"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $("#Add").click(function () {
+        var length = $(".tube-setting").length;
+
+        $("#SettingForm").append(`
+            <div class='mdl-grid tube-setting'>
+                <div class='mdl-cell mdl-cell--1-col'>
+                    <div class='mdl-textfield'>
+                        <span>#${length + 1}</span>
+                    </div>
+                </div>
+                <div class='mdl-cell mdl-cell--2-col'>
+                    <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder is-upgraded is-focused'>
+                        <input class='mdl-textfield__input tube-length' type='text' placeholder='長度(公尺)'>
+                    </div>
+                </div>
+                <div class='mdl-cell mdl-cell--2'>
+                    <div class='mdl-textfield mdl-js-textfield mdl-textfield--floating-label has-placeholder is-upgraded is-focused'>
+                        <input class='mdl-textfield__input tube-quantity' type='text' placeholder='數量'>
+                    </div>
+                </div>
+            </div>`);
+    });
+
+    $("#Delete").click(function () {
+        var length = $(".tube-setting").length;
+
+        if (length > 1) {
+            $($(".tube-setting")[length - 1]).remove();
+        }
+    });
+
+    $("#Crop").click(function () {
+        if (!checkTubeSettings()) {
+            alert("請填寫長度或數量值!");
+
+            return;
+        }
+
+        $.ajax({
+            url: "/Tube/Crop",
+            type: "POST",
+            data: {
+                TubeSettings: getTubeSettings(),
+            },
+            success: function (response) {
+                $("#Result").html("");
+
+                for (var idx = 0; idx < response.length; idx++) {
+                    $("#Result").append(`
+                        <tr>
+                            <td class='mdl-data-table__cell--non-numeric'>${response[idx].SerialNumber}</td>
+                            <td class='mdl-data-table__cell--non-numeric'>${response[idx].TubeList}</td>
+                            <td class='mdl-data-table__cell--non-numeric'>${response[idx].RemainingLength}</td>
+                        </tr>`
+                    );
+                }
+
+                $("#Quantity").html(`結果(共${response.length}根)`);
+            },
+            error: function (response) {
+                alert(response);
+            }
+        });
+    });
+
+    function checkTubeSettings() {
+        var length = $(".tube-setting").length;
+
+        for (var idx = 0; idx < length; idx++) {
+            var length = $($(".tube-length")[idx]).val();
+            var quantity = $($(".tube-quantity")[idx]).val();
+
+            if (length == "" || quantity == "") {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    function getTubeSettings() {
+        var result = [];
+        var length = $(".tube-setting").length;
+
+        for (var idx = 0; idx < length; idx++) {
+            result.push({
+                Length: parseInt($($(".tube-length")[idx]).val()),
+                Quantity: parseInt($($(".tube-quantity")[idx]).val()),
+            });
+        }
+
+        return result;
+    }
+</script>
